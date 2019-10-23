@@ -14,8 +14,8 @@ El ejemplo es un **API REST** desarrollado en **Java 8** con **Spring Boot 2.1**
 * **Mantener la lógica de negocio 100% en el Service**. Para que la llamada desde el Controller sea completamente transparente.
 * **Buen tratamiento de errores**. Para que desde la capa de servicios se emita siempre un **BusinessException** y el Controller solamente vea este tipo de errores.
 * **Buena asignación de responsabilidades, según principios GRASP**. Para asignarle a cada elemento aquellas responsabilidades que pueden llevar adelante, sin recurrir a comunicaciones complejas, tratando siempre que tengamos **alta cohesión** y **bajo acomplamiento**.
-* **Aplicación de principios SOLID**. Para tratar principalmente logran un **desarrollo orientado a la interface**. 
-* **Usar un nombrado correcto en las URLs de los endpoints**. Para lograr que los Servicios Rest sean un **API REST**, y no solamente una capa de servicios. Teniendo en cuenta el **versionado del API REST**.
+* **Aplicación de principios SOLID**. Para tratar principalmente un **desarrollo orientado a la interface**. 
+* **Usar un nombrado correcto en las URLs de los endpoints**. Para lograr que los Servicios Rest sean un **API REST**, y no solamente servicios. Teniendo en cuenta el **versionado del API REST**.
 * **Documentación del API REST con Swagger**. Para poder documentar y probar los endpoints desde un único lugar, sin necesidad de recurrir a herramientas externas o a pruebas realizadas desde el navegador. 
 * **Utilización de H2 en memoria como Database**. Para que el ejemplo sea mas portable y no requiera de un Postgres, MySql, etc.
 * **Habilitación de auditoria de en Spring Boot**. Para que todas las clases del modelo incluyan Timestamp de creación y de actualización.
@@ -30,6 +30,7 @@ El ejemplo es un **API REST** desarrollado en **Java 8** con **Spring Boot 2.1**
 * Se puede acceder a la vista Swagger de documentación del API en: BASE_URL/swagger-ui.html (En donde BASE_URL depende de donde este hospedada la app).
 * Con relación a la BD, fue usada una misma BD en memoria tanto para la app, como para la ejecución de las pruebas de integración. Si bien en un entorno real esto no podría realizarse (por una cuestión de independencia y de confiabilidad de los datos en las pruebas) pude hacerlo en este caso porque la app no altera nunca los datos, se limita solo a hacer consultas. De esta forma, también se simplifica un poco el desarrollo del ejercicio planteado.
 * Soy consciente que en las pruebas de integración es conveniente usar siempre una BD real, ya que en definitiva, no se puede determinar una integración real si la base de datos se encuentra en memoria. Pero al igual que en el caso anterior, esto se hace para simplificar el desarrollo del ejemplo.
+* En las Pruebas Unitarias no hay ingración con Spring Boot, dado que probar de esta forma complica el TDD. Esto sucede porque las pruebas atadas a Spring necesitan levantar el contexto de la app completo o parcial (para que podamos usar inyección de dependencias principalmente) y esta sobrecarga complica demasiado el uso de TDD como técnica de desarrollo. 
 * La app se encuentra alojada en **HEROKU**.
 
 
@@ -38,22 +39,26 @@ El ejemplo es un **API REST** desarrollado en **Java 8** con **Spring Boot 2.1**
 ### OBTENER PREDICCIÓN PARA UN DÍA DETERMINADO
 
 ```sh
-GET http://sleepy-coast-62087.herokuapp.com/api/v1/solarsystems/1/weathercondition?day=1  
+GET http://sleepy-coast-62087.herokuapp.com/api/v1/solarsystems/1/weathercondition?day=2  
 ```
 
 `NOTA 1: En caso de no enviar el parámetro Day se obtiene un BAD REQUEST (400).`
+
 `NOTA 2: Existe un único Sistema Solar cargado en la app, por eso el ID en este caso es 1.`
 
 
 ### OBTENER PREDICCIÓN PARA UN PERÍODO DE AÑOS DETERMINADO
 
 ```sh
-GET http://sleepy-coast-62087.herokuapp.com/api/v1/solarsystems/1/weathercondition?years=1  
+GET http://sleepy-coast-62087.herokuapp.com/api/v1/solarsystems/1/weathercondition?years=2  
 ```
 
 `NOTA 1: En caso de no enviar el parámetro Years se obtiene un BAD REQUEST (400).`
+
 `NOTA 2: En caso de enviar una cantidad de años mayor a 10 se obtiene un BAD REQUEST (400).`
+
 `NOTA 3: Existe un único Sistema Solar cargado en la app, por eso el ID en este caso es 1.`
+
 `NOTA 4: El parámetro Years indica la cantidad de años del período a calcular. El máximo es 10 años.`
 
 
