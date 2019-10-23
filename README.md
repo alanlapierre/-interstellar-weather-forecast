@@ -14,7 +14,7 @@ El ejemplo es un **API REST** desarrollado en **Java 8** con **Spring Boot 2.1**
 * **Mantener la lógica de negocio 100% en el Service**. Para que la llamada desde el Controller sea completamente transparente.
 * **Buen tratamiento de errores**. Para que desde la capa de servicios se emita siempre un **BusinessException** y el Controller solamente vea este tipo de errores.
 * **Buena asignación de responsabilidades, según principios GRASP**. Para asignarle a cada elemento aquellas responsabilidades que pueden llevar adelante, sin recurrir a comunicaciones complejas, tratando siempre que tengamos **alta cohesión** y **bajo acomplamiento**.
-* **Aplicación de principios SOLID**. Para tratar principalmente un **desarrollo orientado a la interface**. 
+* **Aplicación de principios SOLID**. Para tratar principalmente de tener un **desarrollo orientado a la interface**. 
 * **Usar un nombrado correcto en las URLs de los endpoints**. Para lograr que los Servicios Rest sean un **API REST**, y no solamente servicios. Teniendo en cuenta el **versionado del API REST**.
 * **Documentación del API REST con Swagger**. Para poder documentar y probar los endpoints desde un único lugar, sin necesidad de recurrir a herramientas externas o a pruebas realizadas desde el navegador. 
 * **Utilización de H2 en memoria como Database**. Para que el ejemplo sea mas portable y no requiera de un Postgres, MySql, etc.
