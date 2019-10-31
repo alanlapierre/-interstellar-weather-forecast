@@ -31,30 +31,39 @@ public class SolarSystemController {
 
 	Logger logger = LogManager.getLogger(SolarSystemController.class);
 
-	@GetMapping("/solarsystems/{solarSystemId}/weathercondition")
+	@GetMapping("/solarsystems/{solarSystemId}/dayweathercondition")
 	@ApiOperation(value = "Calculate the weather conditions for a given Solar System", notes = "Service to calculate the weather conditions for a given Solar System")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Weather conditions calculated successfully"),
 			@ApiResponse(code = 400, message = "Invalid request") })
-	public ResponseEntity<Object> getWeatherCondition(@PathVariable Long solarSystemId,
-			@RequestParam(value = "day", required = false) Integer day,
-			@RequestParam(value = "years", required = false) Integer years) {
+	public ResponseEntity<Object> getDayWeatherCondition(@PathVariable Long solarSystemId,
+			@RequestParam(value = "day", required = true) Integer day) {
 
 		try {
+			logger.info("SolarSystemController - getDayWeatherCondition, day=" + day);
+			// La condición para un dia determinado.
+			WeatherConditionVO weatherConditionVO = solarSystemService
+					.determineWeatherConditionBySolarSystemIdAndDay(solarSystemId, day);
+			return new ResponseEntity<>(weatherConditionVO, HttpStatus.OK);
 
-			if (day != null) {
-				// La condición para un dia determinado.
-				WeatherConditionVO weatherConditionVO = solarSystemService
-						.determineWeatherConditionBySolarSystemIdAndDay(solarSystemId, day);
-				return new ResponseEntity<>(weatherConditionVO, HttpStatus.OK);
-			} else if (years != null) {
-				// Conjunto de condiciones para un numero de años dado.
-				PeriodWeatherConditionVO periodWeatherConditionVO = solarSystemService
-						.determineWeatherConditionsBySolarSystemIdAndYears(solarSystemId, years);
-				return new ResponseEntity<>(periodWeatherConditionVO, HttpStatus.OK);
+		} catch (IllegalArgumentException | BusinessException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
 
-			} else {
-				return new ResponseEntity<>("Unspecified parameters", HttpStatus.BAD_REQUEST);
-			}
+	@GetMapping("/solarsystems/{solarSystemId}/periodweatherconditions")
+	@ApiOperation(value = "Calculate the weather conditions for a given Solar System", notes = "Service to calculate the period weather conditions for a given Solar System")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Weather conditions calculated successfully"),
+			@ApiResponse(code = 400, message = "Invalid request") })
+	public ResponseEntity<Object> getPeriodWeatherConditions(@PathVariable Long solarSystemId,
+			@RequestParam(value = "years", required = true) Integer years) {
+
+		try {
+			logger.info("SolarSystemController - getPeriodWeatherCondition, years=" + years);
+			
+			// Conjunto de condiciones para un numero de años dado.
+			PeriodWeatherConditionVO periodWeatherConditionVO = solarSystemService
+					.determineWeatherConditionsBySolarSystemIdAndYears(solarSystemId, years);
+			return new ResponseEntity<>(periodWeatherConditionVO, HttpStatus.OK);
 
 		} catch (IllegalArgumentException | BusinessException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

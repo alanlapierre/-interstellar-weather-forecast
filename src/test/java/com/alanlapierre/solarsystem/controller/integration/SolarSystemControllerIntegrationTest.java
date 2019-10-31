@@ -12,7 +12,6 @@ import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -41,7 +40,7 @@ public class SolarSystemControllerIntegrationTest {
 	@Test
 	public void testGetWeatherConditionByDay() throws UnsupportedEncodingException, Exception {
 		
-		String response = mockMvc.perform(get(API_ROOT_PATH +"/solarsystems/{solarSystemId}/weathercondition?day=200", 1))
+		String response = mockMvc.perform(get(API_ROOT_PATH +"/solarsystems/{solarSystemId}/dayweathercondition?day=200", 1))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("$.day", is(200)))
                 .andReturn().getResponse().getContentAsString();
@@ -53,7 +52,7 @@ public class SolarSystemControllerIntegrationTest {
 	@Test
 	public void testGetWeatherConditionByYears() throws UnsupportedEncodingException, Exception {
 		
-		String response = mockMvc.perform(get(API_ROOT_PATH +"/solarsystems/{solarSystemId}/weathercondition?years=1", 1))
+		String response = mockMvc.perform(get(API_ROOT_PATH +"/solarsystems/{solarSystemId}/periodweatherconditions?years=1", 1))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("$.solarSystemId", is(1)))
                 .andReturn().getResponse().getContentAsString();
