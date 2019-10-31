@@ -14,6 +14,7 @@ import com.alanlapierre.solarsystem.model.Planet;
 import com.alanlapierre.solarsystem.model.PolarCoordinate;
 import com.alanlapierre.solarsystem.repository.PlanetRepository;
 import com.alanlapierre.solarsystem.util.DirectionName;
+import com.alanlapierre.solarsystem.util.ParamValidator;
 
 import static com.alanlapierre.solarsystem.util.Constants.*;
 
@@ -33,12 +34,9 @@ public class PlanetServiceImpl implements PlanetService {
 	
 	public Planet getNewPlanetPositionByPlanetIdAndDay(Long planetId, Integer day) throws IllegalArgumentException, BusinessException {
 		
-		Boolean isDayValid = day!=null && day>0;
-		Boolean isPlanetIdValid = planetId != null && planetId>0;
-		
-		if(!isDayValid || !isPlanetIdValid ){
-			throw new IllegalArgumentException("Argument not valid");
-		}
+		ParamValidator.test(day, (i)-> i == null || i <= 0);
+		ParamValidator.test(planetId, (i)-> i == null || i <= 0);
+
 		
 		Planet result = null;
 		
@@ -71,8 +69,6 @@ public class PlanetServiceImpl implements PlanetService {
 
 
 	private Double calculatePlanetAngle(Integer day, Planet planet) {
-		
-		
 		
 		Double newPlanetAngle = planet.getDisplacement() * day; 
 		

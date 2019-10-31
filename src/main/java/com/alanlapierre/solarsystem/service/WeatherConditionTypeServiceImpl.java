@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.alanlapierre.solarsystem.model.WeatherConditionType;
 import com.alanlapierre.solarsystem.repository.WeatherConditionTypeRepository;
+import com.alanlapierre.solarsystem.util.ParamValidator;
 import com.alanlapierre.solarsystem.util.WeatherConditionTypeName;
 
 @Service("weatherConditionTypeService")
@@ -25,9 +26,7 @@ public class WeatherConditionTypeServiceImpl implements WeatherConditionTypeServ
 	
 	public WeatherConditionType getWeatherConditionTypeByName(WeatherConditionTypeName name) throws IllegalArgumentException {
 		
-		if(name == null ){
-			throw new IllegalArgumentException("Argument not valid");
-		}
+		ParamValidator.test(name, (i)-> i == null);
 		
 		return weatherConditionTypeRepository.findByName(name);
 		

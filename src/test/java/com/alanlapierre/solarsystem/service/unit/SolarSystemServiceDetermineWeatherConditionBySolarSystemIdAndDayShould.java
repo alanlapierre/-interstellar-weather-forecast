@@ -59,6 +59,24 @@ public class SolarSystemServiceDetermineWeatherConditionBySolarSystemIdAndDaySho
 		solarSystemService = new SolarSystemServiceImpl(solarSystemRepository, planetService, weatherConditionService, weatherConditionTypeService);
 
 	}
+	
+	
+	// ********************************************************************************
+	// TESTS PARA PARAMETROS INCORRECTOS
+	// ********************************************************************************
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void throw_exception_when_solarSystemId_is_null_and_day_is_null() throws Exception {
+		
+		solarSystemService.determineWeatherConditionBySolarSystemIdAndDay(null, null);
+	}
+
+
+	@Test(expected = IllegalArgumentException.class)
+	public void throw_exception_when_solarSystemId_is_not_null_and_day_is_negative() throws Exception {
+		
+		solarSystemService.determineWeatherConditionBySolarSystemIdAndDay(1L, -1);
+	}
 
 
 	@Test

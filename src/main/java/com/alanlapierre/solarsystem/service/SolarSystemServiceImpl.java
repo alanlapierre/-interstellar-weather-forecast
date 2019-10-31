@@ -17,6 +17,7 @@ import com.alanlapierre.solarsystem.model.SolarSystem;
 import com.alanlapierre.solarsystem.model.WeatherCondition;
 import com.alanlapierre.solarsystem.model.WeatherConditionType;
 import com.alanlapierre.solarsystem.repository.SolarSystemRepository;
+import com.alanlapierre.solarsystem.util.ParamValidator;
 import com.alanlapierre.solarsystem.util.WeatherConditionTypeName;
 import com.alanlapierre.solarsystem.vo.PeriodWeatherConditionVO;
 import com.alanlapierre.solarsystem.vo.VectorDefinitionVO;
@@ -48,13 +49,9 @@ public class SolarSystemServiceImpl implements SolarSystemService {
 	public WeatherConditionVO determineWeatherConditionBySolarSystemIdAndDay(Long solarSystemId, Integer day)
 			throws IllegalArgumentException, BusinessException {
 
-		Boolean isDayValid = day != null && day > 0;
-		Boolean isSolarSystemIdValid = solarSystemId != null && solarSystemId > 0;
-
-		if (!isDayValid || !isSolarSystemIdValid) {
-			throw new IllegalArgumentException("Argument not valid");
-		}
-
+		ParamValidator.test(day, (i)-> i == null || i <= 0);
+		ParamValidator.test(solarSystemId, (i)-> i == null || i <= 0);
+		
 		// Intentamos obtener la condicion previamente calculada si es que existe.
 		WeatherCondition weatherCondition = weatherConditionService
 				.getWeatherConditionBySolarSystemIdAndDay(solarSystemId, day);
@@ -73,12 +70,8 @@ public class SolarSystemServiceImpl implements SolarSystemService {
 	public PeriodWeatherConditionVO determineWeatherConditionsBySolarSystemIdAndYears(Long solarSystemId, Integer years)
 			throws IllegalArgumentException, BusinessException {
 
-		Boolean isYearsValid = years != null && years > 0 && years <= 10;
-		Boolean isSolarSystemIdValid = solarSystemId != null && solarSystemId > 0;
-
-		if (!isYearsValid || !isSolarSystemIdValid) {
-			throw new IllegalArgumentException("Argument not valid / number of years too large");
-		}
+		ParamValidator.test(years, (i)-> i == null || i <= 0 || i > 10);
+		ParamValidator.test(solarSystemId, (i)-> i == null || i <= 0);
 
 		Integer totalDays = getDaysPerYear() * years;
 		Integer droughtPeriods = 0;
