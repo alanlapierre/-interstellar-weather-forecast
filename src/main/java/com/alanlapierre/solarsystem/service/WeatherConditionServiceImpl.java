@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.alanlapierre.solarsystem.error.BusinessException;
 import com.alanlapierre.solarsystem.model.WeatherCondition;
 import com.alanlapierre.solarsystem.repository.WeatherConditionRepository;
-import com.alanlapierre.solarsystem.util.ParamValidator;
+import com.alanlapierre.solarsystem.validator.ParamValidator;
 
 @Service("weatherConditionService")
 @Transactional(readOnly = true)

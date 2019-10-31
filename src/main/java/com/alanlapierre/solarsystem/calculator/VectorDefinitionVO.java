@@ -1,6 +1,6 @@
-package com.alanlapierre.solarsystem.vo;
+package com.alanlapierre.solarsystem.calculator;
 
-public class VectorDefinitionVO {
+public class VectorDefinitionVO implements IPositionable{
 	
 	private Double xposition;
 	private Double yposition;

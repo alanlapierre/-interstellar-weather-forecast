@@ -9,9 +9,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.alanlapierre.solarsystem.calculator.IPositionable;
+
 @Entity
 @Table(name = "cartesian_coordinates")
-public class CartesianCoordinate extends AuditModel{
+public class CartesianCoordinate extends AuditModel implements IPositionable{
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)

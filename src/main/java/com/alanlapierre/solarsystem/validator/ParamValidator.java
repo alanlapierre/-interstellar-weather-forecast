@@ -1,4 +1,4 @@
-package com.alanlapierre.solarsystem.util;
+package com.alanlapierre.solarsystem.validator;
 
 import java.util.function.Predicate;
 

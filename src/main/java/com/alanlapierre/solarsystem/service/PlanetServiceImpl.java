@@ -14,7 +14,7 @@ import com.alanlapierre.solarsystem.model.Planet;
 import com.alanlapierre.solarsystem.model.PolarCoordinate;
 import com.alanlapierre.solarsystem.repository.PlanetRepository;
 import com.alanlapierre.solarsystem.util.DirectionName;
-import com.alanlapierre.solarsystem.util.ParamValidator;
+import com.alanlapierre.solarsystem.validator.ParamValidator;
 
 import static com.alanlapierre.solarsystem.util.Constants.*;
 
