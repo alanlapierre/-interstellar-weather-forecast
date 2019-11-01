@@ -14,7 +14,6 @@ import com.alanlapierre.solarsystem.calculator.IPositionable;
 import com.alanlapierre.solarsystem.calculator.PositionCalculator;
 import com.alanlapierre.solarsystem.calculator.PositionName;
 import com.alanlapierre.solarsystem.error.BusinessException;
-import com.alanlapierre.solarsystem.model.CartesianCoordinate;
 import com.alanlapierre.solarsystem.model.Planet;
 import com.alanlapierre.solarsystem.model.SolarSystem;
 import com.alanlapierre.solarsystem.model.WeatherCondition;
@@ -77,49 +76,47 @@ public class SolarSystemServiceImpl implements SolarSystemService {
 		ParamValidator.test(years, (i)-> i == null || i <= 0 || i > 10);
 		ParamValidator.test(solarSystemId, (i)-> i == null || i <= 0);
 
-		Integer totalDays = getDaysPerYear() * years;
 		Integer droughtPeriods, rainyPeriods, optimalPeriods, maxTriangleAreaDay;
 		droughtPeriods = rainyPeriods = optimalPeriods = maxTriangleAreaDay = 0;
 		Double maxTriangleAreaValue = 0D;
 
+		List<WeatherConditionVO> weatherConditions = generatePeriodWeatherConditions(solarSystemId, years);
+		
+		int day = 1;
+		for (WeatherConditionVO weatherConditionVO : weatherConditions) {
+			switch (weatherConditionVO.getWeatherConditionDescription()) {
+				case OPTIMAL_CONDITIONS:
+					optimalPeriods++;
+					break;
+				case DROUGHT:
+					droughtPeriods++;
+					break;
+				case RAINY:
+					Double area = weatherConditionVO.getTriangleArea();
+					if (area > maxTriangleAreaValue) {
+						maxTriangleAreaValue = area;
+						maxTriangleAreaDay = day;
+					}
+					rainyPeriods++;
+				default:
+					break;
+			}
+			day++;
+		}		
+		
 		PeriodWeatherConditionVO periodWeatherConditionVO = new PeriodWeatherConditionVO();
 		periodWeatherConditionVO.setSolarSystemId(solarSystemId);
 		periodWeatherConditionVO.setYears(years);
-
-		List<WeatherConditionVO> weatherConditions = new ArrayList<WeatherConditionVO>();
-
-		for (int i = 1; i <= totalDays; i++) {
-			WeatherConditionVO weatherConditionVO = determineWeatherConditionBySolarSystemIdAndDay(solarSystemId, i);
-			weatherConditions.add(weatherConditionVO);
-
-			switch (weatherConditionVO.getWeatherConditionDescription()) {
-			case OPTIMAL_CONDITIONS:
-				optimalPeriods++;
-				break;
-			case DROUGHT:
-				droughtPeriods++;
-				break;
-			case RAINY:
-				Double area = weatherConditionVO.getTriangleArea();
-				if (area > maxTriangleAreaValue) {
-					maxTriangleAreaValue = area;
-					maxTriangleAreaDay = i;
-				}
-				rainyPeriods++;
-			default:
-				break;
-			}
-		}
-
 		periodWeatherConditionVO.setWeatherConditions(weatherConditions);
 		periodWeatherConditionVO.setDroughtPeriods(droughtPeriods);
 		periodWeatherConditionVO.setRainyPeriods(rainyPeriods);
 		periodWeatherConditionVO.setOptimalPeriods(optimalPeriods);
 		periodWeatherConditionVO.setDayWithMaximumRainfallIntensity(maxTriangleAreaDay);
 		return periodWeatherConditionVO;
+		
+	}
 
-	} 
-	
+
 	@Override
 	public SolarSystem getSolarSystemById(Long solarSystemId) {
 		return solarSystemRepository.findById(solarSystemId).get();
@@ -139,13 +136,21 @@ public class SolarSystemServiceImpl implements SolarSystemService {
 		
 		PositionName positionName = PositionCalculator.determinePosition(listPositions);
 		
+		WeatherConditionType weatherConditionType = determineWeatherConditionType(positionName);		
+		Double triangleArea = determineTriangleArea(planetList);
+		
 		WeatherCondition weatherCondition = new WeatherCondition();
 		weatherCondition.setDay(day);
+		weatherCondition.setWeatherConditionType(weatherConditionType);
+		weatherCondition.setSolarSystem(solarSystemSaved);
+		weatherCondition.setTriangleArea(triangleArea);
+		return weatherCondition;
+	}
 
+	
+	private WeatherConditionType determineWeatherConditionType(PositionName positionName) {
 		WeatherConditionType weatherConditionType;
 
-		Double triangleArea = 0D;
-		
 		switch(positionName) {
 			case POSITIONS_ALIGNED_BETWEEN_THEM_AND_POSITION_ZERO:
 				weatherConditionType = weatherConditionTypeService.getWeatherConditionTypeByName(WeatherConditionTypeName.DROUGHT);
@@ -158,17 +163,30 @@ public class SolarSystemServiceImpl implements SolarSystemService {
 				break;
 			default:
 				weatherConditionType = weatherConditionTypeService.getWeatherConditionTypeByName(WeatherConditionTypeName.UNDETERMINED);
-		}		
-				
-		CartesianCoordinate p1 = planetList.get(0).getCartesianCoordinate();
-		CartesianCoordinate p2 = planetList.get(1).getCartesianCoordinate();
-		CartesianCoordinate p3 = planetList.get(2).getCartesianCoordinate();
-		triangleArea = PositionCalculator.getTriangleArea(p1, p2, p3);
-		
-		weatherCondition.setWeatherConditionType(weatherConditionType);
-		weatherCondition.setSolarSystem(solarSystemSaved);
-		weatherCondition.setTriangleArea(triangleArea);
-		return weatherCondition;
+		}
+		return weatherConditionType;
 	}
+
+	
+	private Double determineTriangleArea(List<Planet> planetList) {
+		IPositionable p1 = planetList.get(0).getCartesianCoordinate();
+		IPositionable p2 = planetList.get(1).getCartesianCoordinate();
+		IPositionable p3 = planetList.get(2).getCartesianCoordinate();
+		return PositionCalculator.getTriangleArea(p1, p2, p3);
+	}
+	
+	
+	private List<WeatherConditionVO> generatePeriodWeatherConditions(Long solarSystemId, Integer years) throws BusinessException {
+		List<WeatherConditionVO> weatherConditions = new ArrayList<WeatherConditionVO>();
+		Integer totalDays = getDaysPerYear() * years;
+
+		for (int i = 1; i <= totalDays; i++) {
+			WeatherConditionVO weatherConditionVO = determineWeatherConditionBySolarSystemIdAndDay(solarSystemId, i);
+			weatherConditions.add(weatherConditionVO);
+		}
+		
+		return weatherConditions;
+	}
+
 
 }
