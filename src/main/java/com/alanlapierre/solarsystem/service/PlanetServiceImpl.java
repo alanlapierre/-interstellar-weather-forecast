@@ -1,5 +1,7 @@
 package com.alanlapierre.solarsystem.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.apache.logging.log4j.LogManager;
@@ -37,7 +39,6 @@ public class PlanetServiceImpl implements PlanetService {
 		ParamValidator.test(day, (i)-> i == null || i <= 0);
 		ParamValidator.test(planetId, (i)-> i == null || i <= 0);
 
-		
 		Planet result = null;
 		
 		try {
@@ -55,6 +56,18 @@ public class PlanetServiceImpl implements PlanetService {
 		
 		return result;
 		
+	}
+	
+	
+	public List<Planet> getNewPlanetPositionsByDay(List<Planet> planets, Integer day)
+			throws IllegalArgumentException, BusinessException {
+
+		List<Planet> result = new ArrayList<Planet>();
+		for (Planet planet : planets) {
+			Planet newPlanetPos = this.getNewPlanetPositionByPlanetIdAndDay(planet.getId(), day);
+			result.add(newPlanetPos);
+		}
+		return result;
 	}
 
 

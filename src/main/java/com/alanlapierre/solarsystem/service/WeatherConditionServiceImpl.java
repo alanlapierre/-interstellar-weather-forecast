@@ -9,6 +9,7 @@ import com.alanlapierre.solarsystem.error.BusinessException;
 import com.alanlapierre.solarsystem.model.WeatherCondition;
 import com.alanlapierre.solarsystem.repository.WeatherConditionRepository;
 import com.alanlapierre.solarsystem.validator.ParamValidator;
+import com.alanlapierre.solarsystem.vo.WeatherConditionVO;
 
 @Service("weatherConditionService")
 @Transactional(readOnly = true)
@@ -48,6 +49,15 @@ public class WeatherConditionServiceImpl implements WeatherConditionService {
 		return result;
 		
 	}
-
+	
+	public WeatherConditionVO mapToWeatherConditionVO(WeatherCondition weatherCondition) {
+		WeatherConditionVO vo = new WeatherConditionVO();
+		vo.setDay(weatherCondition.getDay());
+		vo.setSolarSystemId(weatherCondition.getSolarSystem().getId());
+		vo.setWeatherConditionDescription(weatherCondition.getWeatherConditionType().getName());
+		vo.setWeatherConditionId(weatherCondition.getId());
+		vo.setTriangleArea(weatherCondition.getTriangleArea());
+		return vo;
+	}
 
 }

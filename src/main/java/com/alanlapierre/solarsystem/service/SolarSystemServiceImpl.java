@@ -53,7 +53,9 @@ public class SolarSystemServiceImpl implements SolarSystemService {
 
 		ParamValidator.test(day, (i)-> i == null || i <= 0);
 		ParamValidator.test(solarSystemId, (i)-> i == null || i <= 0);
-		
+
+		WeatherConditionVO result = null;
+
 		// Intentamos obtener la condicion previamente calculada si es que existe.
 		WeatherCondition weatherCondition = weatherConditionService
 				.getWeatherConditionBySolarSystemIdAndDay(solarSystemId, day);
@@ -61,12 +63,12 @@ public class SolarSystemServiceImpl implements SolarSystemService {
 		if (weatherCondition == null) {
 			weatherCondition = generateNewWeatherCondition(solarSystemId, day);
 			WeatherCondition weatherConditionSaved = weatherConditionService.create(weatherCondition);
-			if(weatherConditionSaved != null) {
-				weatherCondition.setId(weatherConditionSaved.getId());
-			}
+			result = weatherConditionService.mapToWeatherConditionVO(weatherConditionSaved);
+		} else {
+			result = weatherConditionService.mapToWeatherConditionVO(weatherCondition); 
 		}
-		return mapToWeatherConditionVO(weatherCondition);
-
+		
+		return result;
 	}
 
 	public PeriodWeatherConditionVO determineWeatherConditionsBySolarSystemIdAndYears(Long solarSystemId, Integer years)
@@ -76,12 +78,9 @@ public class SolarSystemServiceImpl implements SolarSystemService {
 		ParamValidator.test(solarSystemId, (i)-> i == null || i <= 0);
 
 		Integer totalDays = getDaysPerYear() * years;
-		Integer droughtPeriods = 0;
-		Integer rainyPeriods = 0;
-		Integer optimalPeriods = 0;
-
+		Integer droughtPeriods, rainyPeriods, optimalPeriods, maxTriangleAreaDay;
+		droughtPeriods = rainyPeriods = optimalPeriods = maxTriangleAreaDay = 0;
 		Double maxTriangleAreaValue = 0D;
-		Integer maxTriangleAreaDay = 0;
 
 		PeriodWeatherConditionVO periodWeatherConditionVO = new PeriodWeatherConditionVO();
 		periodWeatherConditionVO.setSolarSystemId(solarSystemId);
@@ -128,8 +127,9 @@ public class SolarSystemServiceImpl implements SolarSystemService {
 
 
 	private WeatherCondition generateNewWeatherCondition(Long solarSystemId, Integer day) throws BusinessException {
+		
 		SolarSystem solarSystemSaved = solarSystemRepository.findById(solarSystemId).get();
-		List<Planet> planetList = this.calculateNewPlanetPositionByDay(solarSystemSaved.getPlanets(), day);
+		List<Planet> planetList = planetService.getNewPlanetPositionsByDay(solarSystemSaved.getPlanets(), day);
 
 		List<IPositionable> listPositions = new ArrayList<IPositionable>();
 		
@@ -169,30 +169,6 @@ public class SolarSystemServiceImpl implements SolarSystemService {
 		weatherCondition.setSolarSystem(solarSystemSaved);
 		weatherCondition.setTriangleArea(triangleArea);
 		return weatherCondition;
-	}
-
-	
-	
-	private List<Planet> calculateNewPlanetPositionByDay(List<Planet> planets, Integer day)
-			throws IllegalArgumentException, BusinessException {
-
-		List<Planet> result = new ArrayList<Planet>();
-		for (Planet planet : planets) {
-			Planet newPlanetPos = planetService.getNewPlanetPositionByPlanetIdAndDay(planet.getId(), day);
-			result.add(newPlanetPos);
-		}
-		return result;
-	}
-
-
-	private WeatherConditionVO mapToWeatherConditionVO(WeatherCondition weatherCondition) {
-		WeatherConditionVO vo = new WeatherConditionVO();
-		vo.setDay(weatherCondition.getDay());
-		vo.setSolarSystemId(weatherCondition.getSolarSystem().getId());
-		vo.setWeatherConditionDescription(weatherCondition.getWeatherConditionType().getName());
-		vo.setWeatherConditionId(weatherCondition.getId());
-		vo.setTriangleArea(weatherCondition.getTriangleArea());
-		return vo;
 	}
 
 }
