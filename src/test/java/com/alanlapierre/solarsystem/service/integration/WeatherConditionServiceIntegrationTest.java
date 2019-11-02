@@ -57,7 +57,7 @@ public class WeatherConditionServiceIntegrationTest {
 		
 		try {
 			WeatherCondition result = weatherConditionService.create(wc);
-			assertThat(result.getWeatherConditionType().getName()).isEqualTo(WeatherConditionPrediction.RAINY);
+			assertThat(result.getWeatherConditionType().getPrediction()).isEqualTo(WeatherConditionPrediction.RAINY);
 			assertNotNull(result.getId());
 		} catch (BusinessException e) {
 			e.printStackTrace();

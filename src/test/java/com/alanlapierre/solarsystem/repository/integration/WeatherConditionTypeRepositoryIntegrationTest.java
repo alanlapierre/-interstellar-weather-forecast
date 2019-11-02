@@ -27,7 +27,7 @@ public class WeatherConditionTypeRepositoryIntegrationTest {
 	public void testFindById() {
 		
 		WeatherConditionType weatherConditionType = weatherConditionTypeRepository.findById(4L).get();
-		assertThat(weatherConditionType.getName().toString()).isEqualToIgnoringCase("UNDETERMINED");
+		assertThat(weatherConditionType.getPrediction().toString()).isEqualToIgnoringCase("UNDETERMINED");
 	}
 	
 	

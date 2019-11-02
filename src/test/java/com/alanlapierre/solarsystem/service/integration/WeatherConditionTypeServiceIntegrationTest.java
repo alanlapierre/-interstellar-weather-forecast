@@ -28,7 +28,7 @@ public class WeatherConditionTypeServiceIntegrationTest {
 		
 		WeatherConditionPrediction name = WeatherConditionPrediction.DROUGHT;
 		WeatherConditionType weatherConditionType = weatherConditionTypeService.getWeatherConditionTypeByName(name);
-		assertThat(weatherConditionType.getName().toString()).isEqualToIgnoringCase("DROUGHT");
+		assertThat(weatherConditionType.getPrediction().toString()).isEqualToIgnoringCase("DROUGHT");
 	}
 
 }
