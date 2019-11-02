@@ -3,7 +3,7 @@ INSERT INTO directions (dir_id, dir_name, created_at, updated_at) VALUES
 	(2, 'ANTICLOCKWISE', '2019-10-15 22:00:00.000', '2019-10-15 22:00:00.000');
  
   
-INSERT INTO weather_condition_types (wct_id, wct_name, created_at, updated_at) VALUES
+INSERT INTO weather_condition_types (wct_id, wct_prediction, created_at, updated_at) VALUES
 	(1, 'DROUGHT', '2019-10-15 22:00:00.000', '2019-10-15 22:00:00.000'),
 	(2, 'RAINY', '2019-10-15 22:00:00.000', '2019-10-15 22:00:00.000'),
 	(3, 'OPTIMAL_CONDITIONS', '2019-10-15 22:00:00.000', '2019-10-15 22:00:00.000'),
