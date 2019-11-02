@@ -8,7 +8,7 @@ import com.alanlapierre.solarsystem.predictor.WeatherConditionPrediction;
 
 public interface WeatherConditionTypeRepository extends JpaRepository<WeatherConditionType, Long> {
 
-	@Query("FROM WeatherConditionType WHERE name = ?1")
-	WeatherConditionType findByName(WeatherConditionPrediction name);
+	@Query("FROM WeatherConditionType WHERE prediction = ?1")
+	WeatherConditionType findByPrediction(WeatherConditionPrediction prediction);
 
 }

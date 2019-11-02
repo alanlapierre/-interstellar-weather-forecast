@@ -5,6 +5,6 @@ import com.alanlapierre.solarsystem.predictor.WeatherConditionPrediction;
 
 public interface WeatherConditionTypeService {
 	
-	WeatherConditionType getWeatherConditionTypeByName(WeatherConditionPrediction name) throws IllegalArgumentException;
+	WeatherConditionType getWeatherConditionTypeByPrediction(WeatherConditionPrediction prediction) throws IllegalArgumentException;
 
 }

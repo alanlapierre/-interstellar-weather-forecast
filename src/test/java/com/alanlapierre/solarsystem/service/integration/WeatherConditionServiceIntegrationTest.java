@@ -48,7 +48,7 @@ public class WeatherConditionServiceIntegrationTest {
 	
 		WeatherCondition wc = new WeatherCondition();
 		
-		WeatherConditionType weatherConditionType = weatherConditionTypeService.getWeatherConditionTypeByName(WeatherConditionPrediction.RAINY);
+		WeatherConditionType weatherConditionType = weatherConditionTypeService.getWeatherConditionTypeByPrediction(WeatherConditionPrediction.RAINY);
 		SolarSystem solarSystem = solarSystemService.getSolarSystemById(1L);
 		
 		wc.setDay(3);

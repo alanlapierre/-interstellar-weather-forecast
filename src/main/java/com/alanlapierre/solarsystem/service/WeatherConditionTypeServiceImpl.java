@@ -24,11 +24,11 @@ public class WeatherConditionTypeServiceImpl implements WeatherConditionTypeServ
 	}
 	
 	
-	public WeatherConditionType getWeatherConditionTypeByName(WeatherConditionPrediction name) throws IllegalArgumentException {
+	public WeatherConditionType getWeatherConditionTypeByPrediction(WeatherConditionPrediction prediction) throws IllegalArgumentException {
 		
-		ParamValidator.test(name, (i)-> i == null);
+		ParamValidator.test(prediction, (i)-> i == null);
 		
-		return weatherConditionTypeRepository.findByName(name);
+		return weatherConditionTypeRepository.findByPrediction(prediction);
 		
 	}
 

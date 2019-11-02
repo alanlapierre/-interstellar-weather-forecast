@@ -134,7 +134,7 @@ public class SolarSystemServiceImpl implements SolarSystemService {
 		IPosition position = weatherConditionPredictor.determinePosition(listPositions);
 
 		WeatherConditionType weatherConditionType = weatherConditionTypeService
-				.getWeatherConditionTypeByName(position.getWeatherConditionPredictionForPosition());
+				.getWeatherConditionTypeByPrediction(position.getWeatherConditionPredictionForPosition());
 
 		Double triangleArea = determineTriangleArea(planetList);
 
