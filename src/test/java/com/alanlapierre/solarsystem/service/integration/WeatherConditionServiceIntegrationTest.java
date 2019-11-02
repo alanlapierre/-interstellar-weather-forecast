@@ -15,10 +15,10 @@ import com.alanlapierre.solarsystem.error.BusinessException;
 import com.alanlapierre.solarsystem.model.SolarSystem;
 import com.alanlapierre.solarsystem.model.WeatherCondition;
 import com.alanlapierre.solarsystem.model.WeatherConditionType;
+import com.alanlapierre.solarsystem.predictor.WeatherConditionPrediction;
 import com.alanlapierre.solarsystem.service.SolarSystemService;
 import com.alanlapierre.solarsystem.service.WeatherConditionService;
 import com.alanlapierre.solarsystem.service.WeatherConditionTypeService;
-import com.alanlapierre.solarsystem.util.WeatherConditionTypeName;
 
 
 @RunWith(SpringRunner.class)
@@ -48,7 +48,7 @@ public class WeatherConditionServiceIntegrationTest {
 	
 		WeatherCondition wc = new WeatherCondition();
 		
-		WeatherConditionType weatherConditionType = weatherConditionTypeService.getWeatherConditionTypeByName(WeatherConditionTypeName.RAINY);
+		WeatherConditionType weatherConditionType = weatherConditionTypeService.getWeatherConditionTypeByName(WeatherConditionPrediction.RAINY);
 		SolarSystem solarSystem = solarSystemService.getSolarSystemById(1L);
 		
 		wc.setDay(3);
@@ -57,7 +57,7 @@ public class WeatherConditionServiceIntegrationTest {
 		
 		try {
 			WeatherCondition result = weatherConditionService.create(wc);
-			assertThat(result.getWeatherConditionType().getName()).isEqualTo(WeatherConditionTypeName.RAINY);
+			assertThat(result.getWeatherConditionType().getName()).isEqualTo(WeatherConditionPrediction.RAINY);
 			assertNotNull(result.getId());
 		} catch (BusinessException e) {
 			e.printStackTrace();

@@ -1,6 +1,6 @@
 package com.alanlapierre.solarsystem.vo;
 
-import com.alanlapierre.solarsystem.util.WeatherConditionTypeName;
+import com.alanlapierre.solarsystem.predictor.WeatherConditionPrediction;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class WeatherConditionVO {
@@ -12,7 +12,7 @@ public class WeatherConditionVO {
 	@JsonIgnore
 	private Double triangleArea;
 	
-	private WeatherConditionTypeName weatherConditionDescription;
+	private WeatherConditionPrediction weatherConditionDescription;
 	
 	public Long getSolarSystemId() {
 		return solarSystemId;
@@ -39,10 +39,10 @@ public class WeatherConditionVO {
 	public Double getTriangleArea() {
 		return triangleArea;
 	}
-	public WeatherConditionTypeName getWeatherConditionDescription() {
+	public WeatherConditionPrediction getWeatherConditionDescription() {
 		return weatherConditionDescription;
 	}
-	public void setWeatherConditionDescription(WeatherConditionTypeName weatherConditionDescription) {
+	public void setWeatherConditionDescription(WeatherConditionPrediction weatherConditionDescription) {
 		this.weatherConditionDescription = weatherConditionDescription;
 	}
 	

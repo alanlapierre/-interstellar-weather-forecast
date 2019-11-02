@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alanlapierre.solarsystem.model.WeatherConditionType;
+import com.alanlapierre.solarsystem.predictor.WeatherConditionPrediction;
 import com.alanlapierre.solarsystem.repository.WeatherConditionTypeRepository;
-import com.alanlapierre.solarsystem.util.WeatherConditionTypeName;
 import com.alanlapierre.solarsystem.validator.ParamValidator;
 
 @Service("weatherConditionTypeService")
@@ -24,7 +24,7 @@ public class WeatherConditionTypeServiceImpl implements WeatherConditionTypeServ
 	}
 	
 	
-	public WeatherConditionType getWeatherConditionTypeByName(WeatherConditionTypeName name) throws IllegalArgumentException {
+	public WeatherConditionType getWeatherConditionTypeByName(WeatherConditionPrediction name) throws IllegalArgumentException {
 		
 		ParamValidator.test(name, (i)-> i == null);
 		

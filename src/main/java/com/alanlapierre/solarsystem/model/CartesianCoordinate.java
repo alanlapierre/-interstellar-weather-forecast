@@ -9,7 +9,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import com.alanlapierre.solarsystem.calculator.IPositionable;
+import com.alanlapierre.solarsystem.predictor.IPositionable;
 
 @Entity
 @Table(name = "cartesian_coordinates")

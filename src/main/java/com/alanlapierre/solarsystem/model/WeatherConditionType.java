@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import com.alanlapierre.solarsystem.util.WeatherConditionTypeName;
+import com.alanlapierre.solarsystem.predictor.WeatherConditionPrediction;
 
 
 @Entity
@@ -23,24 +23,24 @@ public class WeatherConditionType extends AuditModel{
 	private long id;
 	
 	@NotNull
-	@Column(name = "wct_name", nullable = false, unique = true)
+	@Column(name = "wct_prediction", nullable = false, unique = true)
 	@Enumerated(EnumType.STRING)
-	private WeatherConditionTypeName name;
+	private WeatherConditionPrediction prediction;
 	
 	
 	public WeatherConditionType() {
 		super();
 	}
 
-	public WeatherConditionType(@NotNull WeatherConditionTypeName name) {
+	public WeatherConditionType(@NotNull WeatherConditionPrediction prediction) {
 		super();
-		this.name = name;
+		this.prediction = prediction;
 	}
 
-	public WeatherConditionType(long id, @NotNull WeatherConditionTypeName name) {
+	public WeatherConditionType(long id, @NotNull WeatherConditionPrediction prediction) {
 		super();
 		this.id = id;
-		this.name = name;
+		this.prediction = prediction;
 	}
 
 	public long getId() {
@@ -51,17 +51,17 @@ public class WeatherConditionType extends AuditModel{
 		this.id = id;
 	}
 
-	public WeatherConditionTypeName getName() {
-		return name;
+	public WeatherConditionPrediction getPrediction() {
+		return prediction;
 	}
 
-	public void setName(WeatherConditionTypeName name) {
-		this.name = name;
+	public void setPrediction(WeatherConditionPrediction prediction) {
+		this.prediction = prediction;
 	}
 
 	@Override
 	public String toString() {
-		return "WeatherConditionType [id=" + id + ", name=" + name + "]";
+		return "WeatherConditionType [id=" + id + ", prediction=" + prediction + "]";
 	}
 	
 

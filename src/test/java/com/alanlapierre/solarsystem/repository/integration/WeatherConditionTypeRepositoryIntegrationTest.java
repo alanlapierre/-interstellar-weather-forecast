@@ -12,8 +12,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.alanlapierre.solarsystem.model.WeatherConditionType;
+import com.alanlapierre.solarsystem.predictor.WeatherConditionPrediction;
 import com.alanlapierre.solarsystem.repository.WeatherConditionTypeRepository;
-import com.alanlapierre.solarsystem.util.WeatherConditionTypeName;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -33,7 +33,7 @@ public class WeatherConditionTypeRepositoryIntegrationTest {
 	
 	@Test
 	public void testFindByName() {
-		WeatherConditionType weatherConditionType = weatherConditionTypeRepository.findByName(WeatherConditionTypeName.DROUGHT);
+		WeatherConditionType weatherConditionType = weatherConditionTypeRepository.findByName(WeatherConditionPrediction.DROUGHT);
 		assertThat(weatherConditionType.getId()).isEqualTo(1);	
 	}
 	

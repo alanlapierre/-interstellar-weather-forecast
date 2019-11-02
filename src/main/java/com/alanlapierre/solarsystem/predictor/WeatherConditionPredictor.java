@@ -1,20 +1,15 @@
-package com.alanlapierre.solarsystem.calculator;
+package com.alanlapierre.solarsystem.predictor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.alanlapierre.solarsystem.calculator.position.AlignedBetweenThem;
-import com.alanlapierre.solarsystem.calculator.position.AlignedBetweenThemAndPositionZero;
-import com.alanlapierre.solarsystem.calculator.position.PositionZeroOutsideTriangle;
-import com.alanlapierre.solarsystem.calculator.position.PositionZeroInsideTriangle;
-
-import com.alanlapierre.solarsystem.calculator.position.IPosition;
 import com.alanlapierre.solarsystem.error.BusinessException;
+import com.alanlapierre.solarsystem.predictor.position.IPosition;
 
-public class PositionCalculator {
+public abstract class WeatherConditionPredictor {
 	
 	
-	public static IPosition determinePosition(List<IPositionable> listPositions) throws BusinessException {
+	public IPosition determinePosition(List<IPositionable> listPositions) throws BusinessException {
 		
 		List<IPositionable> vectorsBetweenPositions = createVectorsBetweenPositions(listPositions);
 		
@@ -22,9 +17,9 @@ public class PositionCalculator {
 		Boolean arePositionsAlignedBetweenThemAndPositionZero = determineIfPositionsAreAlignedWithPositionZero(vectorsBetweenPositions, listPositions);
 
 		if (arePositionsAlignedBetweenThem && arePositionsAlignedBetweenThemAndPositionZero) {
-			return new AlignedBetweenThemAndPositionZero();
+			return getAlignedBetweenThemAndPositionZero();
 		} else if (arePositionsAlignedBetweenThem) {
-			return new AlignedBetweenThem();
+			return  getAlignedBetweenThemPosition();
 		} else {
 			
 			IPositionable p1 = listPositions.get(0);
@@ -33,23 +28,27 @@ public class PositionCalculator {
 
 			Boolean isPositionZeroInsideTriangle = positionZeroInsideTriangle(p1, p2, p3);
 			if (isPositionZeroInsideTriangle) {
-				return new PositionZeroInsideTriangle();
+				return getPositionZeroInsideTriangle();
 			} else {
-				return new PositionZeroOutsideTriangle();
+				return getPositionZeroOutsideTriangle();
 			}
 		}
 	}
 	
 	
-	public static Double getTriangleArea(IPositionable p1, IPositionable p2, IPositionable p3) {
+	public Double getTriangleArea(IPositionable p1, IPositionable p2, IPositionable p3) {
 
 		return Math.abs((p1.getXposition() * (p2.getYposition() - p3.getYposition())
 				+ p2.getXposition() * (p3.getYposition() - p1.getYposition())
 				+ p3.getXposition() * (p1.getYposition() - p2.getYposition())) / 2.0);
 	}
 	
+	protected abstract IPosition getAlignedBetweenThemPosition();
+	protected abstract IPosition getAlignedBetweenThemAndPositionZero();
+	protected abstract IPosition getPositionZeroInsideTriangle();
+	protected abstract IPosition getPositionZeroOutsideTriangle();
 	
-	private static List<IPositionable> createVectorsBetweenPositions(List<IPositionable> listPositions) {
+	private List<IPositionable> createVectorsBetweenPositions(List<IPositionable> listPositions) {
 		IPositionable p1 = null;
 		IPositionable p2 = null;
 		
@@ -74,7 +73,7 @@ public class PositionCalculator {
 	}
 	
 	
-	private static Boolean determineIfPositionsAreAlignedBetweenThem(List<IPositionable> vectorsBetweenPositions) {
+	private Boolean determineIfPositionsAreAlignedBetweenThem(List<IPositionable> vectorsBetweenPositions) {
 		Boolean areAlignedBetweenThem = true;
 		IPositionable v1 = null;
 		IPositionable v2 = null;
@@ -100,7 +99,7 @@ public class PositionCalculator {
 	
 	
 	
-	private static Boolean determineIfPositionsAreAlignedWithPositionZero(List<IPositionable> vectorsBetweenPositions,	List<IPositionable> listPositions) {
+	private Boolean determineIfPositionsAreAlignedWithPositionZero(List<IPositionable> vectorsBetweenPositions,	List<IPositionable> listPositions) {
 
 		Boolean areAlignedWithPositionZero = true;
 		// Un vector entre alguna posicion de la lista listPositions y el punto (0,0).
@@ -119,7 +118,7 @@ public class PositionCalculator {
 	}
 	
 	
-	private static Boolean positionZeroInsideTriangle(IPositionable p1, IPositionable p2, IPositionable p3) {
+	private Boolean positionZeroInsideTriangle(IPositionable p1, IPositionable p2, IPositionable p3) {
 
 		// Punto P.
 		IPositionable positionZero = new VectorDefinitionVO(0D, 0D);

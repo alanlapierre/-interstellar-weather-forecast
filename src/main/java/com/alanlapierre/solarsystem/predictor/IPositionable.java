@@ -1,4 +1,4 @@
-package com.alanlapierre.solarsystem.calculator;
+package com.alanlapierre.solarsystem.predictor;
 
 public interface IPositionable {
 	

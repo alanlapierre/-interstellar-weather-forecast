@@ -17,6 +17,8 @@ import com.alanlapierre.solarsystem.model.Planet;
 import com.alanlapierre.solarsystem.model.PolarCoordinate;
 import com.alanlapierre.solarsystem.model.SolarSystem;
 import com.alanlapierre.solarsystem.model.WeatherConditionType;
+import com.alanlapierre.solarsystem.predictor.WeatherConditionPredictor;
+import com.alanlapierre.solarsystem.predictor.WeatherConditionPrediction;
 import com.alanlapierre.solarsystem.repository.SolarSystemRepository;
 import com.alanlapierre.solarsystem.service.PlanetService;
 import com.alanlapierre.solarsystem.service.SolarSystemService;
@@ -24,7 +26,6 @@ import com.alanlapierre.solarsystem.service.SolarSystemServiceImpl;
 import com.alanlapierre.solarsystem.service.WeatherConditionService;
 import com.alanlapierre.solarsystem.service.WeatherConditionTypeService;
 import com.alanlapierre.solarsystem.util.DirectionName;
-import com.alanlapierre.solarsystem.util.WeatherConditionTypeName;
 import com.alanlapierre.solarsystem.vo.WeatherConditionVO;
 
 
@@ -41,6 +42,8 @@ public class SolarSystemServiceDetermineWeatherConditionBySolarSystemIdAndDaySho
 
 	private WeatherConditionTypeService weatherConditionTypeService;
 	
+	private WeatherConditionPredictor weatherConditionPredictor;
+	
 	
 	@Before
 	 public void init() {
@@ -56,7 +59,10 @@ public class SolarSystemServiceDetermineWeatherConditionBySolarSystemIdAndDaySho
 		weatherConditionTypeService = Mockito.mock(WeatherConditionTypeService.class);
 		this.mockWeatherConditionTypeServiceGetWeatherConditionTypeByName();
 		
-		solarSystemService = new SolarSystemServiceImpl(solarSystemRepository, planetService, weatherConditionService, weatherConditionTypeService);
+		weatherConditionPredictor = Mockito.mock(WeatherConditionPredictor.class);
+		
+		
+		solarSystemService = new SolarSystemServiceImpl(solarSystemRepository, planetService, weatherConditionService, weatherConditionTypeService, weatherConditionPredictor);
 
 	}
 	
@@ -88,7 +94,7 @@ public class SolarSystemServiceDetermineWeatherConditionBySolarSystemIdAndDaySho
 
 		WeatherConditionVO weatherConditionVO = solarSystemService.determineWeatherConditionBySolarSystemIdAndDay(1L, 1);
 		
-		assertThat(weatherConditionVO.getWeatherConditionDescription(), is(WeatherConditionTypeName.OPTIMAL_CONDITIONS));
+		assertThat(weatherConditionVO.getWeatherConditionDescription(), is(WeatherConditionPrediction.OPTIMAL_CONDITIONS));
 		
 	}
 	
@@ -102,7 +108,7 @@ public class SolarSystemServiceDetermineWeatherConditionBySolarSystemIdAndDaySho
 		
 		WeatherConditionVO weatherConditionVO = solarSystemService.determineWeatherConditionBySolarSystemIdAndDay(1L, 1);
 		
-		assertThat(weatherConditionVO.getWeatherConditionDescription(), is(WeatherConditionTypeName.DROUGHT));
+		assertThat(weatherConditionVO.getWeatherConditionDescription(), is(WeatherConditionPrediction.DROUGHT));
 		
 	}
 	
@@ -117,7 +123,7 @@ public class SolarSystemServiceDetermineWeatherConditionBySolarSystemIdAndDaySho
 		
 		WeatherConditionVO weatherConditionVO = solarSystemService.determineWeatherConditionBySolarSystemIdAndDay(1L, 1);
 		
-		assertThat(weatherConditionVO.getWeatherConditionDescription(), is(WeatherConditionTypeName.RAINY));
+		assertThat(weatherConditionVO.getWeatherConditionDescription(), is(WeatherConditionPrediction.RAINY));
 
 	}
 	
@@ -131,7 +137,7 @@ public class SolarSystemServiceDetermineWeatherConditionBySolarSystemIdAndDaySho
 		
 		WeatherConditionVO weatherConditionVO = solarSystemService.determineWeatherConditionBySolarSystemIdAndDay(1L, 1);
 		
-		assertThat(weatherConditionVO.getWeatherConditionDescription(), is(WeatherConditionTypeName.UNDETERMINED));
+		assertThat(weatherConditionVO.getWeatherConditionDescription(), is(WeatherConditionPrediction.UNDETERMINED));
 	}
 	
 	private void mockSolarSystemRepositoryFindById() {
@@ -157,10 +163,10 @@ public class SolarSystemServiceDetermineWeatherConditionBySolarSystemIdAndDaySho
 	}
 	
 	private void mockWeatherConditionTypeServiceGetWeatherConditionTypeByName() {
-		Mockito.when(weatherConditionTypeService.getWeatherConditionTypeByName(WeatherConditionTypeName.DROUGHT)).thenReturn(new WeatherConditionType(WeatherConditionTypeName.DROUGHT));
-		Mockito.when(weatherConditionTypeService.getWeatherConditionTypeByName(WeatherConditionTypeName.OPTIMAL_CONDITIONS)).thenReturn(new WeatherConditionType(WeatherConditionTypeName.OPTIMAL_CONDITIONS));
-		Mockito.when(weatherConditionTypeService.getWeatherConditionTypeByName(WeatherConditionTypeName.RAINY)).thenReturn(new WeatherConditionType(WeatherConditionTypeName.RAINY));
-		Mockito.when(weatherConditionTypeService.getWeatherConditionTypeByName(WeatherConditionTypeName.UNDETERMINED)).thenReturn(new WeatherConditionType(WeatherConditionTypeName.UNDETERMINED));
+		Mockito.when(weatherConditionTypeService.getWeatherConditionTypeByName(WeatherConditionPrediction.DROUGHT)).thenReturn(new WeatherConditionType(WeatherConditionPrediction.DROUGHT));
+		Mockito.when(weatherConditionTypeService.getWeatherConditionTypeByName(WeatherConditionPrediction.OPTIMAL_CONDITIONS)).thenReturn(new WeatherConditionType(WeatherConditionPrediction.OPTIMAL_CONDITIONS));
+		Mockito.when(weatherConditionTypeService.getWeatherConditionTypeByName(WeatherConditionPrediction.RAINY)).thenReturn(new WeatherConditionType(WeatherConditionPrediction.RAINY));
+		Mockito.when(weatherConditionTypeService.getWeatherConditionTypeByName(WeatherConditionPrediction.UNDETERMINED)).thenReturn(new WeatherConditionType(WeatherConditionPrediction.UNDETERMINED));
 	}
 
 }

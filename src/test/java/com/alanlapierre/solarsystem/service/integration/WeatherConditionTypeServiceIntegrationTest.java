@@ -11,8 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.alanlapierre.solarsystem.model.WeatherConditionType;
+import com.alanlapierre.solarsystem.predictor.WeatherConditionPrediction;
 import com.alanlapierre.solarsystem.service.WeatherConditionTypeService;
-import com.alanlapierre.solarsystem.util.WeatherConditionTypeName;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -26,7 +26,7 @@ public class WeatherConditionTypeServiceIntegrationTest {
 	@Test
 	public void testGetWeatherConditionTypeByName() {
 		
-		WeatherConditionTypeName name = WeatherConditionTypeName.DROUGHT;
+		WeatherConditionPrediction name = WeatherConditionPrediction.DROUGHT;
 		WeatherConditionType weatherConditionType = weatherConditionTypeService.getWeatherConditionTypeByName(name);
 		assertThat(weatherConditionType.getName().toString()).isEqualToIgnoringCase("DROUGHT");
 	}

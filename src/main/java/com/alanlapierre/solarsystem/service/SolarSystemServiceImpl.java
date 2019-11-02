@@ -10,14 +10,14 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.alanlapierre.solarsystem.calculator.IPositionable;
-import com.alanlapierre.solarsystem.calculator.PositionCalculator;
-import com.alanlapierre.solarsystem.calculator.position.IPosition;
 import com.alanlapierre.solarsystem.error.BusinessException;
 import com.alanlapierre.solarsystem.model.Planet;
 import com.alanlapierre.solarsystem.model.SolarSystem;
 import com.alanlapierre.solarsystem.model.WeatherCondition;
 import com.alanlapierre.solarsystem.model.WeatherConditionType;
+import com.alanlapierre.solarsystem.predictor.IPositionable;
+import com.alanlapierre.solarsystem.predictor.WeatherConditionPredictor;
+import com.alanlapierre.solarsystem.predictor.position.IPosition;
 import com.alanlapierre.solarsystem.repository.SolarSystemRepository;
 import com.alanlapierre.solarsystem.validator.ParamValidator;
 import com.alanlapierre.solarsystem.vo.PeriodWeatherConditionVO;
@@ -30,20 +30,19 @@ public class SolarSystemServiceImpl implements SolarSystemService {
 	Logger logger = LogManager.getLogger(SolarSystemServiceImpl.class);
 
 	private final SolarSystemRepository solarSystemRepository;
-
 	private final PlanetService planetService;
-
 	private final WeatherConditionService weatherConditionService;
-
-	private WeatherConditionTypeService weatherConditionTypeService;
+	private final WeatherConditionTypeService weatherConditionTypeService;
+	private final WeatherConditionPredictor weatherConditionPredictor; 
 
 	public SolarSystemServiceImpl(SolarSystemRepository solarSystemRepository, PlanetService planetService,
-			WeatherConditionService weatherConditionService, WeatherConditionTypeService weatherConditionTypeService) {
+			WeatherConditionService weatherConditionService, WeatherConditionTypeService weatherConditionTypeService, WeatherConditionPredictor weatherConditionPredictor) {
 
 		this.solarSystemRepository = solarSystemRepository;
 		this.planetService = planetService;
 		this.weatherConditionService = weatherConditionService;
 		this.weatherConditionTypeService = weatherConditionTypeService;
+		this.weatherConditionPredictor = weatherConditionPredictor;
 	}
 
 	public WeatherConditionVO determineWeatherConditionBySolarSystemIdAndDay(Long solarSystemId, Integer day)
@@ -132,10 +131,10 @@ public class SolarSystemServiceImpl implements SolarSystemService {
 			listPositions.add(planet.getCartesianCoordinate());
 		}
 
-		IPosition position = PositionCalculator.determinePosition(listPositions);
+		IPosition position = weatherConditionPredictor.determinePosition(listPositions);
 
 		WeatherConditionType weatherConditionType = weatherConditionTypeService
-				.getWeatherConditionTypeByName(position.getWeatherConditionTypeName());
+				.getWeatherConditionTypeByName(position.getWeatherConditionPredictionForPosition());
 
 		Double triangleArea = determineTriangleArea(planetList);
 
@@ -152,7 +151,7 @@ public class SolarSystemServiceImpl implements SolarSystemService {
 		IPositionable p1 = planetList.get(0).getCartesianCoordinate();
 		IPositionable p2 = planetList.get(1).getCartesianCoordinate();
 		IPositionable p3 = planetList.get(2).getCartesianCoordinate();
-		return PositionCalculator.getTriangleArea(p1, p2, p3);
+		return weatherConditionPredictor.getTriangleArea(p1, p2, p3);
 	}
 
 	private List<WeatherConditionVO> generatePeriodWeatherConditions(Long solarSystemId, Integer years)

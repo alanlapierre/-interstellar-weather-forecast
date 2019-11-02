@@ -54,7 +54,7 @@ public class WeatherConditionServiceImpl implements WeatherConditionService {
 		WeatherConditionVO vo = new WeatherConditionVO();
 		vo.setDay(weatherCondition.getDay());
 		vo.setSolarSystemId(weatherCondition.getSolarSystem().getId());
-		vo.setWeatherConditionDescription(weatherCondition.getWeatherConditionType().getName());
+		vo.setWeatherConditionDescription(weatherCondition.getWeatherConditionType().getPrediction());
 		vo.setWeatherConditionId(weatherCondition.getId());
 		vo.setTriangleArea(weatherCondition.getTriangleArea());
 		return vo;

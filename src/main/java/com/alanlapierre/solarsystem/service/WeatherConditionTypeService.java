@@ -1,10 +1,10 @@
 package com.alanlapierre.solarsystem.service;
 
 import com.alanlapierre.solarsystem.model.WeatherConditionType;
-import com.alanlapierre.solarsystem.util.WeatherConditionTypeName;
+import com.alanlapierre.solarsystem.predictor.WeatherConditionPrediction;
 
 public interface WeatherConditionTypeService {
 	
-	WeatherConditionType getWeatherConditionTypeByName(WeatherConditionTypeName name) throws IllegalArgumentException;
+	WeatherConditionType getWeatherConditionTypeByName(WeatherConditionPrediction name) throws IllegalArgumentException;
 
 }
