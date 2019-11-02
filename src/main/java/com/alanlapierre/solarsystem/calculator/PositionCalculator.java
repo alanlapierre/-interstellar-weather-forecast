@@ -3,12 +3,18 @@ package com.alanlapierre.solarsystem.calculator;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alanlapierre.solarsystem.calculator.position.AlignedBetweenThem;
+import com.alanlapierre.solarsystem.calculator.position.AlignedBetweenThemAndPositionZero;
+import com.alanlapierre.solarsystem.calculator.position.PositionZeroOutsideTriangle;
+import com.alanlapierre.solarsystem.calculator.position.PositionZeroInsideTriangle;
+
+import com.alanlapierre.solarsystem.calculator.position.IPosition;
 import com.alanlapierre.solarsystem.error.BusinessException;
 
 public class PositionCalculator {
 	
 	
-	public static PositionName determinePosition(List<IPositionable> listPositions) throws BusinessException {
+	public static IPosition determinePosition(List<IPositionable> listPositions) throws BusinessException {
 		
 		List<IPositionable> vectorsBetweenPositions = createVectorsBetweenPositions(listPositions);
 		
@@ -16,9 +22,9 @@ public class PositionCalculator {
 		Boolean arePositionsAlignedBetweenThemAndPositionZero = determineIfPositionsAreAlignedWithPositionZero(vectorsBetweenPositions, listPositions);
 
 		if (arePositionsAlignedBetweenThem && arePositionsAlignedBetweenThemAndPositionZero) {
-			return PositionName.POSITIONS_ALIGNED_BETWEEN_THEM_AND_POSITION_ZERO;
+			return new AlignedBetweenThemAndPositionZero();
 		} else if (arePositionsAlignedBetweenThem) {
-			return PositionName.POSITIONS_ALIGNED_BETWEEN_THEM; 
+			return new AlignedBetweenThem();
 		} else {
 			
 			IPositionable p1 = listPositions.get(0);
@@ -27,9 +33,9 @@ public class PositionCalculator {
 
 			Boolean isPositionZeroInsideTriangle = positionZeroInsideTriangle(p1, p2, p3);
 			if (isPositionZeroInsideTriangle) {
-				return PositionName.POSITION_ZERO_INSIDE_TRIANGLE;
+				return new PositionZeroInsideTriangle();
 			} else {
-				return PositionName.POSITION_ZERO_OUTSIDE_TRIANGLE;
+				return new PositionZeroOutsideTriangle();
 			}
 		}
 	}
