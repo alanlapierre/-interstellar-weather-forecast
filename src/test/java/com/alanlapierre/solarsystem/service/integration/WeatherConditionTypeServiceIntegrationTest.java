@@ -24,7 +24,7 @@ public class WeatherConditionTypeServiceIntegrationTest {
 	
 	
 	@Test
-	public void testGetWeatherConditionTypeByName() {
+	public void testGetWeatherConditionTypeByPrediction() {
 		
 		WeatherConditionPrediction prediction = WeatherConditionPrediction.DROUGHT;
 		WeatherConditionType weatherConditionType = weatherConditionTypeService.getWeatherConditionTypeByPrediction(prediction);

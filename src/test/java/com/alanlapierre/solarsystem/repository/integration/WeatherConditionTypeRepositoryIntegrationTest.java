@@ -32,7 +32,7 @@ public class WeatherConditionTypeRepositoryIntegrationTest {
 	
 	
 	@Test
-	public void testFindByName() {
+	public void testFindByPrediction() {
 		WeatherConditionType weatherConditionType = weatherConditionTypeRepository.findByPrediction(WeatherConditionPrediction.DROUGHT);
 		assertThat(weatherConditionType.getId()).isEqualTo(1);	
 	}
