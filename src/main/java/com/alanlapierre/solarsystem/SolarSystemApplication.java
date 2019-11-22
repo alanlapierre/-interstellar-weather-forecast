@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
 @EnableJpaAuditing
-//@EnableScheduling
 public class SolarSystemApplication {
 
 	public static void main(String[] args) {
