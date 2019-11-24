@@ -19,6 +19,7 @@ import com.alanlapierre.solarsystem.predictor.IPositionable;
 import com.alanlapierre.solarsystem.predictor.WeatherConditionPredictor;
 import com.alanlapierre.solarsystem.predictor.position.IPosition;
 import com.alanlapierre.solarsystem.repository.SolarSystemRepository;
+import com.alanlapierre.solarsystem.validator.ConditionsComposer;
 import com.alanlapierre.solarsystem.validator.ParamValidator;
 import com.alanlapierre.solarsystem.vo.PeriodWeatherConditionVO;
 import com.alanlapierre.solarsystem.vo.WeatherConditionVO;
@@ -48,8 +49,8 @@ public class SolarSystemServiceImpl implements SolarSystemService {
 	public WeatherConditionVO determineWeatherConditionBySolarSystemIdAndDay(Long solarSystemId, Integer day)
 			throws IllegalArgumentException, BusinessException {
 
-		ParamValidator.test(day, (i) -> i == null || i <= 0);
-		ParamValidator.test(solarSystemId, (i) -> i == null || i <= 0);
+		ParamValidator.test(day, ConditionsComposer.or((i) -> i == null, (i) -> i <= 0));
+		ParamValidator.test(solarSystemId, ConditionsComposer.or((i) -> i == null, (i) -> i <= 0));
 
 		WeatherConditionVO result = null;
 
@@ -72,8 +73,8 @@ public class SolarSystemServiceImpl implements SolarSystemService {
 	public PeriodWeatherConditionVO determineWeatherConditionsBySolarSystemIdAndYears(Long solarSystemId, Integer years)
 			throws IllegalArgumentException, BusinessException {
 
-		ParamValidator.test(years, (i) -> i == null || i <= 0 || i > 10);
-		ParamValidator.test(solarSystemId, (i) -> i == null || i <= 0);
+		ParamValidator.test(years, ConditionsComposer.or((i) -> i == null, (i) -> i <= 0 , (i)-> i > 10));
+		ParamValidator.test(solarSystemId, ConditionsComposer.or((i) -> i == null , (i) -> i <= 0));
 
 		Integer droughtPeriods, rainyPeriods, optimalPeriods, maxTriangleAreaDay;
 		droughtPeriods = rainyPeriods = optimalPeriods = maxTriangleAreaDay = 0;

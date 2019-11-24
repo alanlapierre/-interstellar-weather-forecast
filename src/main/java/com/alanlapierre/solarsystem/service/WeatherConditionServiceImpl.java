@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.alanlapierre.solarsystem.error.BusinessException;
 import com.alanlapierre.solarsystem.model.WeatherCondition;
 import com.alanlapierre.solarsystem.repository.WeatherConditionRepository;
+import com.alanlapierre.solarsystem.validator.ConditionsComposer;
 import com.alanlapierre.solarsystem.validator.ParamValidator;
 import com.alanlapierre.solarsystem.vo.WeatherConditionVO;
 
@@ -27,8 +28,8 @@ public class WeatherConditionServiceImpl implements WeatherConditionService {
 	
 	public WeatherCondition getWeatherConditionBySolarSystemIdAndDay(Long solarSystemId, Integer day) throws IllegalArgumentException {
 		
-		ParamValidator.test(day, (i)-> i == null || i <= 0);
-		ParamValidator.test(solarSystemId, (i)-> i == null || i <= 0);
+		ParamValidator.test(day, ConditionsComposer.or((i)-> i == null , (i) -> i <= 0));
+		ParamValidator.test(solarSystemId, ConditionsComposer.or((i)-> i == null , (i) -> i <= 0));
 		
 		return weatherConditionRepository.findBySolarSystemIdAndDay(solarSystemId, day);
 		
