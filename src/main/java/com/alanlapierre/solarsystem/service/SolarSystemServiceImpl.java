@@ -5,8 +5,6 @@ import static com.alanlapierre.solarsystem.util.Constants.getDaysPerYear;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,8 +25,6 @@ import com.alanlapierre.solarsystem.vo.WeatherConditionVO;
 @Service("solarSystemService")
 @Transactional(readOnly = true)
 public class SolarSystemServiceImpl implements SolarSystemService {
-
-	Logger logger = LogManager.getLogger(SolarSystemServiceImpl.class);
 
 	private final SolarSystemRepository solarSystemRepository;
 	private final PlanetService planetService;

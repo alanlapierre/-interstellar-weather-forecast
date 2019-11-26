@@ -1,7 +1,5 @@
 package com.alanlapierre.solarsystem.service;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,8 +12,6 @@ import com.alanlapierre.solarsystem.validator.ParamValidator;
 @Transactional(readOnly = true)
 public class WeatherConditionTypeServiceImpl implements WeatherConditionTypeService{
 	
-	Logger logger = LogManager.getLogger(WeatherConditionTypeServiceImpl.class);
-
 	private final WeatherConditionTypeRepository weatherConditionTypeRepository;
 
 

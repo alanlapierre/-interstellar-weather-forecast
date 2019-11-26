@@ -105,11 +105,11 @@ public class WeatherCondition extends AuditModel{
 	}
 
 
-	@Override
-	public String toString() {
-		return "WeatherCondition [id=" + id + ", day=" + day + ", weatherConditionType=" + weatherConditionType
-				+ ", solarsystem=" + solarSystem + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "WeatherCondition [id=" + id + ", day=" + day + ", weatherConditionType=" + weatherConditionType
+//				+ ", solarsystem=" + solarSystem + "]";
+//	}
 
 
 	public void setTriangleArea(Double triangleArea) {

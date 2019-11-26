@@ -1,7 +1,7 @@
 package com.alanlapierre.solarsystem.controller;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,10 +26,10 @@ import io.swagger.annotations.ApiResponses;
 @Api(tags = "solarsystem")
 public class SolarSystemController {
 
+	private static final Logger logger = LoggerFactory.getLogger(SolarSystemController.class);
+	
 	@Autowired
 	private SolarSystemService solarSystemService;
-
-	Logger logger = LogManager.getLogger(SolarSystemController.class);
 
 	@GetMapping("/solarsystems/{solarSystemId}/dayweathercondition")
 	@ApiOperation(value = "Calculate the weather conditions for a given Solar System", notes = "Service to calculate the weather conditions for a given Solar System")
@@ -39,7 +39,7 @@ public class SolarSystemController {
 			@RequestParam(value = "day", required = true) Integer day) {
 
 		try {
-			logger.info("SolarSystemController - getDayWeatherCondition, day=" + day);
+			logger.info("SolarSystemController - getDayWeatherCondition with day = {}", day);
 			// La condición para un dia determinado.
 			WeatherConditionVO weatherConditionVO = solarSystemService
 					.determineWeatherConditionBySolarSystemIdAndDay(solarSystemId, day);
@@ -58,7 +58,7 @@ public class SolarSystemController {
 			@RequestParam(value = "years", required = true) Integer years) {
 
 		try {
-			logger.info("SolarSystemController - getPeriodWeatherCondition, years=" + years);
+			logger.info("SolarSystemController - getPeriodWeatherConditions with years = {}", years);
 			
 			// Conjunto de condiciones para un numero de años dado.
 			PeriodWeatherConditionVO periodWeatherConditionVO = solarSystemService

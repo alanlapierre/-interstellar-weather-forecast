@@ -7,8 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.io.UnsupportedEncodingException;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-
-import com.alanlapierre.solarsystem.service.PlanetServiceImpl;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -34,9 +30,6 @@ public class SolarSystemControllerIntegrationTest {
     private final static String API_ROOT_PATH ="/api/v1";
 	
 	
-	Logger logger = LogManager.getLogger(PlanetServiceImpl.class);
-
-	
 	@Test
 	public void testGetWeatherConditionByDay() throws UnsupportedEncodingException, Exception {
 		
@@ -45,7 +38,6 @@ public class SolarSystemControllerIntegrationTest {
                 .andExpect(jsonPath("$.day", is(200)))
                 .andReturn().getResponse().getContentAsString();
 		
-		logger.info("response testGetWeatherConditionByDay: " + response);
    }
 	
 	
@@ -57,7 +49,6 @@ public class SolarSystemControllerIntegrationTest {
                 .andExpect(jsonPath("$.solarSystemId", is(1)))
                 .andReturn().getResponse().getContentAsString();
 
-		logger.info("response testGetWeatherConditionByYears: " + response);
 	}	
 
 }

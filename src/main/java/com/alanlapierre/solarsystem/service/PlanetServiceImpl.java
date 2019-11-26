@@ -1,11 +1,11 @@
 package com.alanlapierre.solarsystem.service;
 
+import static com.alanlapierre.solarsystem.util.Constants.getMaxAngle;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,13 +19,9 @@ import com.alanlapierre.solarsystem.util.DirectionName;
 import com.alanlapierre.solarsystem.validator.ConditionsComposer;
 import com.alanlapierre.solarsystem.validator.ParamValidator;
 
-import static com.alanlapierre.solarsystem.util.Constants.*;
-
 @Service("planetService")
 @Transactional(readOnly = true)
 public class PlanetServiceImpl implements PlanetService {
-
-	Logger logger = LogManager.getLogger(PlanetServiceImpl.class);
 
 	private final PlanetRepository planetRepository;
 
