@@ -14,12 +14,12 @@ El ejemplo es un **API REST** desarrollado en **Java 8** con **Spring Boot 2.1**
 * **Mantener la lógica de negocio 100% en el Service**. Para que la llamada desde el Controller sea completamente transparente.
 * **Buen tratamiento de errores**. Para que desde la capa de servicios se emita siempre un **BusinessException** y el Controller solamente vea este tipo de errores.
 * **Buena asignación de responsabilidades, según principios GRASP**. Para asignarle a cada elemento aquellas responsabilidades que pueden llevar adelante, sin recurrir a comunicaciones complejas, tratando siempre que tengamos **alta cohesión** y **bajo acomplamiento**.
-* **Aplicación de principios SOLID**. Para tratar principalmente de tener un **desarrollo orientado a la interface**. 
+* **Aplicación de principios SOLID**. Para tratar principalmente de tener código **cohesivo** y con **bajo acoplamiento**. 
 * **Usar un nombrado correcto en las URLs de los endpoints**. Para lograr que los Servicios Rest sean un **API REST**, y no solamente servicios. Teniendo en cuenta el **versionado del API REST**.
 * **Documentación del API REST con Swagger**. Para poder documentar y probar los endpoints desde un único lugar, sin necesidad de recurrir a herramientas externas o a pruebas realizadas desde el navegador. 
 * **Utilización de H2 en memoria como Database**. Para que el ejemplo sea mas portable y no requiera de un Postgres, MySql, etc.
 * **Habilitación de auditoria de en Spring Boot**. Para que todas las clases del modelo incluyan Timestamp de creación y de actualización.
-* **Utilización de Virtual Objects (VO) como elementos retornados por el API REST**. Para no exponer contenido innecesario de mis entidades y para no verme forzado a usar la notación **JsonIgnore** en las entidades del modelo.
+* **Utilización de VOs como elementos retornados por el API REST**. Para no exponer contenido innecesario de mis entidades y para no verme forzado a usar la notación **JsonIgnore** en las entidades del modelo.
 * **Realización de Pruebas Unitarias como parte del proceso de Test Driven Development**. Para poder cumplir con las premisas de TDD fueron desarrolladas dos clases de Testing, que contienen las pruebas del core del negocio. Se trata de los dos métodos que condicionan el funcionamiento de toda la app.
 * **Realización de Pruebas Integración**. Para poder verificar el comportamiento de cada método/endpoint del sistema y controllar que la integración entre componentes funciona de forma correcta.
 
